@@ -8,9 +8,14 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ success: false, message: "Email already exists" });
     }
 
+    if (!req.body.name || !req.body.email || !req.body.password) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
     const user = await User.create(req.body);
     res.status(201).json({ success: true, user });
   } catch (err) {
+    console.error("REGISTER ERROR:", err);
     res.status(400).json({ success: false, message: err.message });
   }
 };
